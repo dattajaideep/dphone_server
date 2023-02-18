@@ -29,7 +29,7 @@ public class UserEntity {
     @Column(name="roles")
     private String roles;
     @Column
-    private int points;
+    private int points;//Need to add to database
     @Column
     private String referalCode;
 }
