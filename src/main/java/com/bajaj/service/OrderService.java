@@ -32,7 +32,7 @@ public class OrderService {
             OrderEntity ordersEntity = new OrderEntity();
             BeanUtils.copyProperties(orderBean, ordersEntity);
             int id=userEntityOptional.get().getId();
-            ordersEntity.setId(id);
+            ordersEntity.setUserId(id);
             orderRepository.save(ordersEntity);
             return new  ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
         }
