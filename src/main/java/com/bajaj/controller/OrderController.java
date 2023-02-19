@@ -15,4 +15,10 @@ public class OrderController {
     public ResponseEntity<String> newOrder(@RequestBody OrderBean orderBean) {
         return orderService.newOrder(orderBean);
     }
+    @GetMapping("/displayall")
+    public ResponseEntity<Map<OrdersBean, ProductBean>> allOrders()
+    {
+        return orderService.allOrders();
+    }
+
 }
