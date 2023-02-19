@@ -2,6 +2,7 @@ package com.bajaj.service;
 
 import com.bajaj.beans.ReferralBean;
 import com.bajaj.entity.ReferralEntity;
+import com.bajaj.entity.UserEntity;
 import com.bajaj.repository.ReferralRepository;
 import com.bajaj.repository.UserInfoRepository;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReferralService {
@@ -49,9 +51,11 @@ public class ReferralService {
         return new ResponseEntity<ReferralBean>(bean, HttpStatus.OK);
 
     }
-    public ResponseEntity <List<ReferralBean>> allReferral()
+    public ResponseEntity <List<ReferralBean>> allReferral(Optional<UserEntity> user)
     {
-        List<ReferralEntity> referralEntity = referralRepository.allReferralById(6) ; // here we have to add the id of the user who has logged in
+        System.out.println("-------");
+        System.out.println(user.toString());
+        List<ReferralEntity> referralEntity = referralRepository.allReferralById(3) ; // here we have to add the id of the user who has logged in
         List<ReferralBean> referralBean=new ArrayList<>();
         for(ReferralEntity r:referralEntity)
         {
