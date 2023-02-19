@@ -2,10 +2,13 @@ package com.bajaj.controller;
 
 import com.bajaj.beans.OrderBean;
 import com.bajaj.beans.ProductBean;
+import com.bajaj.entity.OrderEntity;
+import com.bajaj.entity.ProductEntity;
 import com.bajaj.entity.UserEntity;
 import com.bajaj.service.JwtService;
 import com.bajaj.service.OrderService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,13 +27,13 @@ public class OrderController {
     @Autowired
     public UserService userService;
     @PostMapping("/order/add")
-    public ResponseEntity<String> newOrder(@RequestBody OrderBean orderBean,@RequestHeader("Authorization") String token ) {
+    public ResponseEntity<String> newOrder(@RequestBody String referalcode,@RequestBody OrderBean orderBean,@RequestHeader("Authorization") String token ) {
         String name = jwtService.extractUsername(token.split(" ")[1].toString());
         Optional<UserEntity> userEntityOptional = userService.findByname(name);
-        return orderService.newOrder(orderBean,userEntityOptional);
+        return orderService.newOrder(orderBean,userEntityOptional,referalcode);
     }
     @GetMapping("/displayall")
-    public ResponseEntity<Map<OrderBean, ProductBean>> allOrders(@RequestHeader("Authorization") String token )
+    public ResponseEntity <List<ProductBean>> allOrders(@RequestHeader("Authorization") String token )
     {
         String name = jwtService.extractUsername(token.split(" ")[1].toString());
         Optional<UserEntity> userEntityOptional = userService.findByname(name);
