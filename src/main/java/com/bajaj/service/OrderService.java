@@ -33,27 +33,26 @@ public class OrderService {
             BeanUtils.copyProperties(orderBean, ordersEntity);
             int id=userEntityOptional.get().getId();
             ordersEntity.setUserId(id);
-//            if( referalCode!=null)
-//            {
-//                Integer referralId= userRepository.findByReferralCode(referalCode);
-//
-//                if(referralId ==null)
-//                {
-//                    return new  ResponseEntity<String>("Invalid Referral Code", HttpStatus.OK);
-//                }
-//                else
-//                {
-//                    UserEntity user_details = userRepository.findById(referralId);
-//                    user_details.setPoints(user_details.getPoints()+500);
-//                    userRepository.save(user_details);
-//                    ordersEntity.setRedeemedPoints(userEntityOptional.get().getPoints());
-//                    ordersEntity.setSalePrice(ordersEntity.getSalePrice()-userEntityOptional.get().getPoints());
-//                    userEntityOptional.get().setPoints(0);
-//                    ordersEntity.setUserId(userEntityOptional.get().getId());
-//
-//                }
-//
-//            }
+            if( referalCode!=null)
+            {
+                Integer referralId= userRepository.findByReferralCode(referalCode);
+
+                if(referralId ==null)
+                {
+                    return new  ResponseEntity<String>("Invalid Referral Code", HttpStatus.OK);
+                }
+                else
+                {
+                    Optional<UserEntity> user_details = userRepository.findById(referralId);
+                    user_details.get().setPoints(user_details.get().getPoints()+500);
+                    userRepository.save(user_details.get());
+                    ordersEntity.setRedeemedPoints(userEntityOptional.get().getPoints());
+                    ordersEntity.setSalePrice(ordersEntity.getSalePrice()-userEntityOptional.get().getPoints());
+                    userEntityOptional.get().setPoints(0);
+                    ordersEntity.setUserId(userEntityOptional.get().getId());
+                }
+
+            }
             orderRepository.save(ordersEntity);
             return new  ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
             }
