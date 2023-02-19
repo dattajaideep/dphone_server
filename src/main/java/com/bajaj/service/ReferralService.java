@@ -59,7 +59,8 @@ public class ReferralService {
     {
         System.out.println("-------");
         System.out.println(user.toString());
-        List<ReferralEntity> referralEntity = referralRepository.allReferralById(3) ; // here we have to add the id of the user who has logged in
+        int referralId=user.get().getId();
+        List<ReferralEntity> referralEntity = referralRepository.allReferralById(referralId) ; // here we have to add the id of the user who has logged in
         List<ReferralBean> referralBean=new ArrayList<>();
         for(ReferralEntity r:referralEntity)
         {
