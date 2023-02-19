@@ -20,7 +20,7 @@ public class ReferralEntity {
     private int id;
     @Column(name = "referrerId")
     private int referrerId;
-    @Column(name = "referrerCode")
+    @Column(name = "referralCode")
     private String referrerCode;
     @Column(name = "referralName")
     private String referralName;

@@ -25,10 +25,13 @@ public class ReferralController {
     private JwtService jwtService;
 
     @PostMapping("/referrals/add")
-    public ResponseEntity<String> addReferral(@RequestBody ReferralBean referralBean)
-    {
-        return referralService.addReferral(referralBean);
+    public ResponseEntity<String> addReferral(@RequestBody ReferralBean referralBean,
+            @RequestHeader("Authorization") String token) {
+        String name = jwtService.extractUsername(token.split(" ")[1].toString());
+        Optional<UserEntity> userEntityOptional = userService.findByname(name);
+        return referralService.addReferral(userEntityOptional, referralBean);
     }
+    
     @PostMapping("/referrals/edit")
     public ResponseEntity<ReferralBean> editReferral(@RequestBody ReferralBean referralBean)
     {

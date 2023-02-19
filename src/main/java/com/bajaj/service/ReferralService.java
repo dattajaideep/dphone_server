@@ -21,23 +21,27 @@ public class ReferralService {
     private ReferralRepository referralRepository;
     @Autowired
     private UserInfoRepository userInfoRepository;
-    public ResponseEntity<String> addReferral(ReferralBean referralBean)
-    {
-        ReferralEntity referralEntity=new ReferralEntity();
-        BeanUtils.copyProperties(referralBean,referralEntity);
-//        String checkEmail=userInfoRepository.findByEmail(referralEntity.getReferralEmail());
-//        String checkEmail1=referralRepository.findByEmail(referralEntity.getReferralEmail());
-//        if(!(checkEmail==null)) {
-//            return new ResponseEntity<String>("Invalid referral", HttpStatus.OK);
-//        }
-//        else if(!(checkEmail1==null)) {
-//            return new ResponseEntity<String>("referral Exists",HttpStatus.OK);
-//        }
-//        else {
+   
+    public ResponseEntity<String> addReferral(Optional<UserEntity> userEntityOptional, ReferralBean referralBean) {
+        ReferralEntity referralEntity = new ReferralEntity();
+        BeanUtils.copyProperties(referralBean, referralEntity);
+        referralEntity.setReferrerId(userEntityOptional.get().getId());
+        referralEntity.setReferrerCode(userEntityOptional.get().getReferralCode());
+        // String
+        // checkEmail=userInfoRepository.findByEmail(referralEntity.getReferralEmail());
+        // String
+        // checkEmail1=referralRepository.findByEmail(referralEntity.getReferralEmail());
+        // if(!(checkEmail==null)) {
+        // return new ResponseEntity<String>("Invalid referral", HttpStatus.OK);
+        // }
+        // else if(!(checkEmail1==null)) {
+        // return new ResponseEntity<String>("referral Exists",HttpStatus.OK);
+        // }
+        // else {
 
-            referralRepository.save(referralEntity);
-            return new ResponseEntity<String>("referral added Successfully",HttpStatus.OK);
-//        }
+        referralRepository.save(referralEntity);
+        return new ResponseEntity<String>("referral added Successfully", HttpStatus.OK);
+        // }
 
     }
     public ResponseEntity <ReferralBean> editReferral(ReferralBean referralBean)
