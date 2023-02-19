@@ -11,8 +11,8 @@ public interface UserInfoRepository extends JpaRepository<UserEntity, Integer> {
     Optional<UserEntity> findByName(String username);
     @Query("select q from UserEntity q where q.email=:mail")
     public String findByEmail(String mail);
-    @Query("select q form UserEntity q where q.referralCode=:Code")
-    public int findByReferralCode(String Code);
+//    @Query("select q form UserEntity q where q.referralCode=:Code")
+//    public int findByReferralCode(String Code);
     UserEntity findById(int productId);
 
 }

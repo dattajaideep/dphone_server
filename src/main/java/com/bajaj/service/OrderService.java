@@ -31,8 +31,8 @@ public class OrderService {
         try {
             OrderEntity ordersEntity = new OrderEntity();
             BeanUtils.copyProperties(orderBean, ordersEntity);
-//            int id=userEntityOptional.get().getId();
-//            ordersEntity.setUserId(id);
+            int id=userEntityOptional.get().getId();
+            ordersEntity.setUserId(id);
 //            if( referalCode!=null)
 //            {
 //                Integer referralId= userRepository.findByReferralCode(referalCode);
