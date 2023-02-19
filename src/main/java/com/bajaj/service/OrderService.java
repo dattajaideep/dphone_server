@@ -1,8 +1,16 @@
 package com.bajaj.service;
 
 import com.bajaj.beans.OrderBean;
+import com.bajaj.beans.ProductBean;
 import com.bajaj.entity.OrderEntity;
+import com.bajaj.entity.ProductEntity;
 import com.bajaj.repository.OrderRepository;
+import com.bajaj.repository.ProductRepository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +21,9 @@ import org.springframework.stereotype.Service;
 public class OrderService {
     @Autowired
     public OrderRepository orderRepository;
+
+    @Autowired
+    public ProductRepository productRepository;
     public ResponseEntity<String> newOrder(OrderBean orderBean)
     {
            try {
@@ -28,19 +39,19 @@ public class OrderService {
 
         }
     }
-    public ResponseEntity<Map<OrdersBean, ProductBean>> allOrders()
+    public ResponseEntity<Map<OrderBean, ProductBean>> allOrders()
     {
-        Map<OrdersBean, ProductBean> orderProduct=new HashMap<>();
-        List<OrdersEntity> orders=ordersDao.findByUserId(7); ///here we have to add the id of the user who is logged in
-        for (OrdersEntity o: orders)
+        Map<OrderBean, ProductBean> orderProduct=new HashMap<>();
+        List<OrderEntity> orders= orderRepository.findByUserId(7); ///here we have to add the id of the user who is logged in
+        for (OrderEntity o: orders)
         {
-            ProductEntity product= productDao.findByProductId(o.getProductId());
-            OrdersBean ordersBean=new OrdersBean();
+            ProductEntity product= productRepository.findByProductId(o.getProductId());
+            OrderBean ordersBean=new OrderBean();
             ProductBean productBean=new ProductBean();
             BeanUtils.copyProperties(o,ordersBean);
             BeanUtils.copyProperties(product,productBean);
             orderProduct.put(ordersBean,productBean);
         }
-        return  new ResponseEntity<Map<OrdersBean, ProductBean>>(orderProduct,HttpStatus.OK);
+        return  new ResponseEntity<Map<OrderBean, ProductBean>>(orderProduct,HttpStatus.OK);
     }
 }

@@ -1,7 +1,11 @@
 package com.bajaj.controller;
 
 import com.bajaj.beans.OrderBean;
+import com.bajaj.beans.ProductBean;
 import com.bajaj.service.OrderService;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +20,7 @@ public class OrderController {
         return orderService.newOrder(orderBean);
     }
     @GetMapping("/displayall")
-    public ResponseEntity<Map<OrdersBean, ProductBean>> allOrders()
+    public ResponseEntity<Map<OrderBean, ProductBean>> allOrders()
     {
         return orderService.allOrders();
     }
