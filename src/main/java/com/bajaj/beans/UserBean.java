@@ -18,7 +18,7 @@ public class UserBean {
     private String password;
     private String roles;
     private int points;
-    private String referalCode;
+    private String referralCode;
     private String phoneNumber;
     private Date updatedAt;
 }

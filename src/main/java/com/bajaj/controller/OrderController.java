@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import com.bajaj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +28,15 @@ public class OrderController {
     public JwtService jwtService;
     @Autowired
     public UserService userService;
-    @PostMapping("/order/add")
-    public ResponseEntity<String> newOrder(@RequestBody String referalcode,@RequestBody OrderBean orderBean,@RequestHeader("Authorization") String token ) {
+
+
+    @PostMapping("/orderadd/{referalcode}")
+    public ResponseEntity<String> newOrder(@PathVariable String referalcode, @RequestBody OrderBean orderBean,
+            @RequestHeader("Authorization") String token) {
         String name = jwtService.extractUsername(token.split(" ")[1].toString());
         Optional<UserEntity> userEntityOptional = userService.findByname(name);
         return orderService.newOrder(orderBean,userEntityOptional,referalcode);
+        //return new ResponseEntity<String>("hello",HttpStatus.OK);
     }
     @GetMapping("/displayall")
     public ResponseEntity <List<ProductBean>> allOrders(@RequestHeader("Authorization") String token )

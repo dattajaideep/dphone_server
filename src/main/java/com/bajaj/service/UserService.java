@@ -42,7 +42,7 @@ public class UserService {
         System.out.println(userBean);
         userBean.setPoints(0);
         userBean.setRoles("USER");
-        userBean.setReferalCode(code(8));
+        userBean.setReferralCode(code(8));
         userBean.setPassword(passwordEncoder.encode(userBean.getPassword()));
         BeanUtils.copyProperties(userBean , userEntity);
         userInfoRepository.save(userEntity);

@@ -26,59 +26,92 @@ public class OrderService {
     public ProductRepository productRepository;
     @Autowired
     public UserInfoRepository userRepository;
+
     public ResponseEntity<String> newOrder(OrderBean orderBean, Optional<UserEntity> userEntityOptional,String referalCode)
     {
-        try {
-            OrderEntity ordersEntity = new OrderEntity();
-            BeanUtils.copyProperties(orderBean, ordersEntity);
-            int id=userEntityOptional.get().getId();
-            ordersEntity.setUserId(id);
-            if( referalCode!=null)
-            {
-                Integer referralId= userRepository.findByReferralCode(referalCode);
+        // try {
+        // OrderEntity ordersEntity = new OrderEntity();
+        // BeanUtils.copyProperties(orderBean, ordersEntity);
+        // int id=userEntityOptional.get().getId();
+        // ordersEntity.setUserId(id);
+        // if( referalCode!=null)
+        // {
+        //     Integer referralId= userRepository.findByReferralCode(referalCode);
+        //     System.out.print("hello  :"+ referralId);
+        //     //int referralId = 0;
+        //     if(referralId ==null)
+        //     {
+        //         return new  ResponseEntity<String>("Invalid Referral Code", HttpStatus.OK);
+        //     }
+        //     else
+        //     {
+        //         Optional<UserEntity> user_details = userRepository.findById(referralId);
+        //         user_details.get().setPoints(user_details.get().getPoints()+500);
+        //         userRepository.save(user_details.get());
+        //         ordersEntity.setRedeemedPoints(userEntityOptional.get().getPoints());
+        //         ordersEntity.setSalePrice(ordersEntity.getSalePrice()-userEntityOptional.get().getPoints());
+        //         userEntityOptional.get().setPoints(0);
+        //         ordersEntity.setUserId(userEntityOptional.get().getId());
+        //     }
 
-                if(referralId ==null)
-                {
-                    return new  ResponseEntity<String>("Invalid Referral Code", HttpStatus.OK);
-                }
-                else
-                {
-                    Optional<UserEntity> user_details = userRepository.findById(referralId);
-                    user_details.get().setPoints(user_details.get().getPoints()+500);
-                    userRepository.save(user_details.get());
-                    ordersEntity.setRedeemedPoints(userEntityOptional.get().getPoints());
-                    ordersEntity.setSalePrice(ordersEntity.getSalePrice()-userEntityOptional.get().getPoints());
-                    userEntityOptional.get().setPoints(0);
-                    ordersEntity.setUserId(userEntityOptional.get().getId());
-                }
+        // }
+        // orderRepository.save(ordersEntity);
+        // return new  ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
+        // }
+        // catch (Exception e)
+        // {
+        // System.out.println(e);
+        // return new ResponseEntity<String>("order failed",HttpStatus.CONFLICT);
 
-            }
-            orderRepository.save(ordersEntity);
-            return new  ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
-            }
-        catch (Exception e)
+        //}
+
+        OrderEntity orderEntity = new OrderEntity();
+        BeanUtils.copyProperties(orderBean, orderEntity);
+        Integer id = userEntityOptional.get().getId();
+        orderEntity.setUserId(id);
+        try
         {
-            System.out.println(e);
-            return new ResponseEntity<String>("order failed",HttpStatus.CONFLICT);
+        UserEntity referredUser = userRepository.findByReferralCode(referalCode);
+        Integer ReferredId = referredUser.getId();
+        boolean flag=true;
+        if (ReferredId >= 0)
+        {
+            flag = true;
 
         }
-    }
-    public ResponseEntity<List<ProductBean>> allOrders(Optional<UserEntity> userEntityOptional)
-    {
-        Map<OrderBean, ProductBean> orderProduct=new HashMap<>();
-        int id= userEntityOptional.get().getId();
-        List<OrderEntity> orders= orderRepository.findByUserId(id); ///here we have to add the id of the user who is logged in
-        List <ProductBean> productList=new ArrayList<>();
-        for (OrderEntity o: orders)
+        else
         {
-            ProductEntity product= productRepository.findByProductId(o.getProductId());
+            flag = false;
+        }
+        if (flag == true)
+        {
+            referredUser.setPoints(referredUser.getPoints() + 500);
+            userRepository.save(referredUser);
+        }
+    }
+    finally
+    {
+        orderRepository.save(orderEntity);
+        return new ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
+    }
+    }
+
+
+    public ResponseEntity<List<ProductBean>> allOrders(Optional<UserEntity> userEntityOptional) {
+        Map<OrderBean, ProductBean> orderProduct = new HashMap<>();
+        int id = userEntityOptional.get().getId();
+        List<OrderEntity> orders = orderRepository.findByUserId(id); ///here we have to add the id of the user who is logged in
+        List<ProductBean> productList = new ArrayList<>();
+        for (OrderEntity o : orders) {
+            ProductEntity product = productRepository.findByProductId(o.getProductId());
             //OrderBean ordersBean=new OrderBean();
-            ProductBean productBean=new ProductBean();
+            ProductBean productBean = new ProductBean();
             //BeanUtils.copyProperties(o,ordersBean);
-            BeanUtils.copyProperties(product,productBean);
+            BeanUtils.copyProperties(product, productBean);
             productList.add(productBean);
             //orderProduct.put(ordersBean,productBean);
         }
-        return  new ResponseEntity <List<ProductBean>> (productList,HttpStatus.OK);
+        return new ResponseEntity<List<ProductBean>>(productList, HttpStatus.OK);
     }
 }
+
