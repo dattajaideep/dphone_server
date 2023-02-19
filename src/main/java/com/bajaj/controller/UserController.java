@@ -1,6 +1,7 @@
 package com.bajaj.controller;
 
 import com.bajaj.beans.UserBean;
+import com.bajaj.entity.UserEntity;
 import com.bajaj.beans.AuthRequest;
 import com.bajaj.service.JwtService;
 import com.bajaj.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -40,10 +42,19 @@ public class UserController {
                 throw new UsernameNotFoundException("invalid user request !");
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getLocalizedMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.NOT_FOUND);
         }
 
     }
+    
+    @GetMapping("/userinfo")
+    public Optional<UserEntity> getUserData(@RequestHeader("Authorization") String token) {
+        String name = jwtService.extractUsername(token.split(" ")[1].toString());
+        System.out.println(userService.findByname(name));
+        return userService.findByname(name);
+    }
+
+
     @PostMapping("/new")
     public ResponseEntity<UserBean> addNewUser(@RequestBody UserBean userBean) {
         return userService.addUser(userBean);

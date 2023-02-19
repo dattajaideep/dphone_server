@@ -7,6 +7,7 @@ import com.bajaj.repository.UserInfoRepository;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.BeanUtils;
@@ -63,5 +64,12 @@ public class UserService {
             allUserBean.add(bean);
         }
         return allUserBean;
+    }
+
+    public Optional<UserEntity> findByname(String name) {
+        System.out.println("name = " + name);
+        Optional<UserEntity> user = userInfoRepository.findByName(name);
+        System.out.println("asdasd" + user.toString());
+        return user;
     }
 }
