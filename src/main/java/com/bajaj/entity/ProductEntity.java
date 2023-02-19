@@ -14,19 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "ProductEntity")
+@Table(name = "mobile_phone")
 public class ProductEntity {
     @Id
-    @Column(name = "productId")
+    @Column(name = "id")
     private int productId;
-    @Column(name = "productModel")
+    @Column(name = "model")
     private String productModel;
-    @Column(name = "productBrand")
+    @Column(name = "brand")
     private String productBrand;
-    @Column(name = "productPrice")
+    @Column(name = "price")
     private int productPrice;
-    @Column(name = "productDescription")
+    @Column(name = "description")
     private String productDescription;
-    @Column(name = "productImage")
+    @Column(name = "image_link")
     private String productImage;
 }
