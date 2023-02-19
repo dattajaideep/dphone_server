@@ -32,7 +32,7 @@ public class ReferralService {
         // String
         // checkEmail1=referralRepository.findByEmail(referralEntity.getReferralEmail());
         // if(!(checkEmail==null)) {
-        // return new ResponseEntity<String>("Invalid referral", HttpStatus.OK);
+        // return new ResponseEntity<String>("Invalid referral", HttpStatus.CONFLIC);
         // }
         // else if(!(checkEmail1==null)) {
         // return new ResponseEntity<String>("referral Exists",HttpStatus.OK);

@@ -8,11 +8,9 @@ import com.bajaj.entity.UserEntity;
 import com.bajaj.repository.OrderRepository;
 import com.bajaj.repository.ProductRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+import com.bajaj.repository.UserInfoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,16 +24,39 @@ public class OrderService {
 
     @Autowired
     public ProductRepository productRepository;
-    public ResponseEntity<String> newOrder(OrderBean orderBean, Optional<UserEntity> userEntityOptional)
+    @Autowired
+    public UserInfoRepository userRepository;
+    public ResponseEntity<String> newOrder(OrderBean orderBean, Optional<UserEntity> userEntityOptional,String referalCode)
     {
         try {
             OrderEntity ordersEntity = new OrderEntity();
             BeanUtils.copyProperties(orderBean, ordersEntity);
-            int id=userEntityOptional.get().getId();
-            ordersEntity.setUserId(id);
+//            int id=userEntityOptional.get().getId();
+//            ordersEntity.setUserId(id);
+//            if( referalCode!=null)
+//            {
+//                Integer referralId= userRepository.findByReferralCode(referalCode);
+//
+//                if(referralId ==null)
+//                {
+//                    return new  ResponseEntity<String>("Invalid Referral Code", HttpStatus.OK);
+//                }
+//                else
+//                {
+//                    UserEntity user_details = userRepository.findById(referralId);
+//                    user_details.setPoints(user_details.getPoints()+500);
+//                    userRepository.save(user_details);
+//                    ordersEntity.setRedeemedPoints(userEntityOptional.get().getPoints());
+//                    ordersEntity.setSalePrice(ordersEntity.getSalePrice()-userEntityOptional.get().getPoints());
+//                    userEntityOptional.get().setPoints(0);
+//                    ordersEntity.setUserId(userEntityOptional.get().getId());
+//
+//                }
+//
+//            }
             orderRepository.save(ordersEntity);
             return new  ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
-        }
+            }
         catch (Exception e)
         {
             System.out.println(e);
@@ -43,20 +64,22 @@ public class OrderService {
 
         }
     }
-    public ResponseEntity<Map<OrderBean, ProductBean>> allOrders(Optional<UserEntity> userEntityOptional)
+    public ResponseEntity<List<ProductBean>> allOrders(Optional<UserEntity> userEntityOptional)
     {
         Map<OrderBean, ProductBean> orderProduct=new HashMap<>();
         int id= userEntityOptional.get().getId();
         List<OrderEntity> orders= orderRepository.findByUserId(id); ///here we have to add the id of the user who is logged in
+        List <ProductBean> productList=new ArrayList<>();
         for (OrderEntity o: orders)
         {
             ProductEntity product= productRepository.findByProductId(o.getProductId());
-            OrderBean ordersBean=new OrderBean();
+            //OrderBean ordersBean=new OrderBean();
             ProductBean productBean=new ProductBean();
-            BeanUtils.copyProperties(o,ordersBean);
+            //BeanUtils.copyProperties(o,ordersBean);
             BeanUtils.copyProperties(product,productBean);
-            orderProduct.put(ordersBean,productBean);
+            productList.add(productBean);
+            //orderProduct.put(ordersBean,productBean);
         }
-        return  new ResponseEntity<Map<OrderBean, ProductBean>>(orderProduct,HttpStatus.OK);
+        return  new ResponseEntity <List<ProductBean>> (productList,HttpStatus.OK);
     }
 }
