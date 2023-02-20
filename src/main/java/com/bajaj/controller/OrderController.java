@@ -2,20 +2,17 @@ package com.bajaj.controller;
 
 import com.bajaj.beans.OrderBean;
 import com.bajaj.beans.ProductBean;
-import com.bajaj.entity.OrderEntity;
-import com.bajaj.entity.ProductEntity;
+
 import com.bajaj.entity.UserEntity;
 import com.bajaj.service.JwtService;
 import com.bajaj.service.OrderService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import com.bajaj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

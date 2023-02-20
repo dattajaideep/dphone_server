@@ -91,6 +91,11 @@ public class OrderService {
     }
     finally
     {
+        /////////////////////////////////
+       // orderEntity.setSalePrice(orderBean.getSalePrice() - userEntityOptional.get().getPoints());
+        userEntityOptional.get().setPoints(0);
+
+        ////////////////
         orderRepository.save(orderEntity);
         return new ResponseEntity<String>("order executed Successfully", HttpStatus.OK);
     }
