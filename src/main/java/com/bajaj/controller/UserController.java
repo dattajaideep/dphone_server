@@ -3,6 +3,8 @@ package com.bajaj.controller;
 import com.bajaj.beans.UserBean;
 import com.bajaj.entity.UserEntity;
 import com.bajaj.beans.AuthRequest;
+import com.bajaj.exceptions.EmailNotFoundException;
+import com.bajaj.exceptions.PasswordNotFoundException;
 import com.bajaj.service.JwtService;
 import com.bajaj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,7 @@ public class UserController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<UserBean> addNewUser(@RequestBody UserBean userBean) {
+    public ResponseEntity<?> addNewUser(@RequestBody UserBean userBean) throws PasswordNotFoundException, EmailNotFoundException {
         return userService.addUser(userBean);
     }
     @GetMapping("/allusers")
